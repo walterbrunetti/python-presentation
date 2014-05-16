@@ -1,0 +1,918 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Python - OrderGroove</title>
+
+		<meta name="description" content="Introduction to Python - Ordergroove">
+		<meta name="author" content="Walter M Brunetti">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+                    <section data-markdown>
+                        <script type="text/template">
+                            # Python
+                        </script>
+                    </section>
+                    <section data-markdown id="creating-objects">
+                        <script type="text/template">
+                            ### Quick Introduction
+
+                            - Python was conceived in the late 1980s and its implementation was started in December 1989 - <a href="https://www.python.org/~guido/" target="_blank">Guido Van Rossum</a>
+                            - Name python comes from the TV show "Monty Python's flying circus" from 1969
+
+                            ### Language summary
+                            - Python is an interpreted programming language.
+                            - Object-oriented (Objects are first class citizens)
+                            - Dynamic typing
+
+                            ### How to get it
+                            - www.python.org/download/
+
+                            ### PEP 8 - Style Guide for Python Code
+                            - http://legacy.python.org/dev/peps/pep-0008/
+
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Python Versions
+                            - Currently in a transition between python2 and python3
+                            - Python 3 is not backwards compatible
+                            - Python 2.7.6 last version of python2 series (Nov 10, 2013)
+                            - Python 3.3.5 last version of python3 series (March 9, 2014)
+
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Interactive Mode
+                            - Running python interpreter in a terminal
+                            - Much cooler interactive mode called ipython
+
+                            ```
+                            $ python3.3
+                            Python 3.3 (default, Sep 24 2012, 09:25:04)
+                            [GCC 4.6.3] on linux2
+                            Type "help", "copyright", "credits" or "license" for more information.
+                            >>>
+                            ```
+
+                            - Sentences are executed inmediatly
+                            - If sentece result is an expression, it will be printed on screen
+                            - Last printed expression is assigned to the variable _
+                            - "print" used to be a keyword, it's a builtin function since python2.6
+                            - help(object) displays documentation
+                            - Closing the interpreter
+                                -  ctrl-d, ctrl-z
+                                - raise SystemExit
+                                - import sys; sys.exit(code)
+                                - On execite a file, finish when it gets to the end
+
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Advantages
+                            - Variables are just names assigned to values
+                                - Operator (=) links a name with a value
+                                - Same name can be set to different value type
+                                - Type information is in the value, not in the name
+                            - ####Indentation is Python’s way of grouping statements and defining blocks
+                                - Also known as off-side rule
+
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Conditionals
+
+
+                            ```
+                                if boolean_expression:
+                                    block
+                                elif another_boolean_expression:
+                                    block
+                                elif ...
+                                    block
+                                else:
+                                    block
+                            ```
+
+                            - no switch/case at all!
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Strings
+                            - Python strings cannot be changed — they are immutable
+                            - Strings can be indexed, with the first character having index 0
+                            - Slicing is also supported
+                            - While indexing is used to obtain individual characters, slicing allows you to obtain substring [start:stop:step]
+                            ```
+                                >>> a="hello world"
+                                >>> a[0]
+                                'h'
+                                >>> a[0:3]
+                                'hel'
+                                >>> a[-1]
+                                'd'
+                                >>> a[::2]
+                                'hlowrd'
+                                >>> a[0]='b'
+                                Traceback (most recent call last):
+                                    File "<stdin>", line 1, in <module>
+                                TypeError: 'str' object does not support item assignment
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                        ### Strings(2)
+                        - Python is more strongly typed than other languages like Perl or PHP. No automatic type promotion supported for strings
+                        - Objects can be converted to string representations
+                        - repr(obj) (string representation of object - serialization)
+                        - str(obj) (value to be diplayed by print(obj) - intended to be more human-readable than ```__repr__```)
+                        - From python 2.6 format method, similar to C's printf
+
+                        ```'{0} %s {1}'.format('foo', 'bar')```
+                        ```
+                            >>> print(a + ", how're you doin'")
+                            hello world, how're you doin'
+                            >>> a + 16
+                            Traceback (most recent call last):
+                            File "<stdin>", line 1, in <module>
+                            TypeError: cannot concatenate 'str' and 'int' objects
+
+                            >>> a + '16' + str(16)
+                            'hello world1616'
+                         ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                        ### Lists
+                        - Lists are a mutable type, it is possible to change their content
+                        - Lists might contain items of different types
+                        - Literal List construction is supported
+
+                        ```
+                            >>> a = ['hello', 'world', 1, 2]
+                            >>> a[0]
+                            'hello'
+                            >>> a[2:] # slicing returns a new list
+                            [1, 2]
+                            >>> a[1] = False
+                            >>> a
+                            ['hello', False, 1, 2]
+                            >>> a[4]="extra"
+                            Traceback (most recent call last):
+                                File "<stdin>", line 1, in <module>
+                            IndexError: list assignment index out of range
+                        ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                        ```
+                            >>> a
+                            ['hello', False, 1, 2]
+                            >>> a.append("extra")
+                            >>> a
+                            ['hello', False, 1, 2, 'extra']
+                            >>> a.pop(0)
+                            'hello'
+                            >>> a
+                            [1, 2, 'extra']
+                            >>> a + [3,4,5] # lists support concatenation
+                            [1, 2, 'extra', 3, 4, 5]
+                            >>> [] == list()
+                            True
+                            >>> a = [1,2,[0,1,2],"End"]
+                        ```
+                        </script>
+                    </section>
+
+                    <section data-markdown>
+                        <script type="text/template">
+                        ### Tuples
+                        - Similar to Lists, but immutable
+                        ```
+                            >>> t = ('hello', 1, 2, 3)
+                            >>> t[0] = 10
+                            Traceback (most recent call last):
+                            File "<stdin>", line 1, in <module>
+                            TypeError: 'tuple' object does not support item assignment
+
+                            >>> t2 = 'hello', 1, 2, 3
+                            >>> t2 == t
+                            True
+                        ```
+
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                        ### Dictionaries
+                        - Also known as Maps, Hashes, key-value stores.
+                        - Literal way: {key: value, ...}
+
+                        ```
+                        import datetime
+                        user = {
+                            'name': 'Walter',
+                            'company': 'OrderGroove',
+                            'start_date': datetime.date(2014, 03, 03)
+                        }
+                        >>> user
+                        {'name': 'Walter', 'company': 'OrderGroove', 'start_date': datetime.date(2014, 03, 03)}
+                        >>> user['name']
+                        'Walter'
+                        >>> user.keys()
+                        ['name', 'company', 'start_date']
+                        >>> user.values()
+                        ['Walter', 'OrderGroove', datetime.date(2010, 5, 3)]
+                        >>> user['language'] = ['python']
+                        >>> user
+                        {'name': 'Walter', 'company': 'OrderGroove', 'start_date': datetime.date(2010, 5, 3),
+                        'language': ['python']}
+                        >>> user['extra_data']
+                        Traceback (most recent call last):
+                            File "<stdin>", line 1, in <module>
+                        KeyError: 'extra_data'
+
+                        >>> user.get('extra_data', [])
+                        []
+                        ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                        ### Sets
+                        - Unordered collections of unique elements
+                        - Common uses include removing duplicates from a sequence and computing standard math operations on sets such as intersection, union, etc.
+
+                        ```
+                            >>> s = set([1,2,3]) # no literal constrcution on 2.6
+                            >>> s = {1,2,3} # since python 2.7+
+                            >>> len(s)
+                            3
+                            >>> 2 in s and not (10 in s)
+                            True
+                            >>> s.remove(1)
+                            >>> s.add(5)
+                            >>> s
+                            set([2, 3, 5])
+                            >>> s.add(2)
+                            >>> s
+                            set([2, 3, 5])
+                            >>> s.union({True, 'hello'})
+                            set([True, 2, 3, 5, 'hello'])
+                        ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Loops & Iterations
+                            - Most popular loop is the "for loop" (WhileLoop as alternative)
+                            - Takes an iterable object (explained later) and execute the block for each iteration
+                            - Sequences, as other types, allow iterations
+                            ```
+                                >>>for i in [5,6]
+                                ...  for j in [10,18]:
+                                ...    print(gcd(i,j))
+                                ...
+                                5
+                                1
+                                2
+                                6
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            #### More examples
+                            ```
+                                    >>> for c in "hello":
+                                    ...   print(c)
+                                    ...
+                                    h
+                                    e
+                                    l
+                                    l
+                                    o
+                            ```
+                            ```
+                                >>> d = {'name': 'Pete', 'company': 'OrderGroove'}
+                                >>> for k in d:
+                                ...   print(k,d[k])
+                                ...
+                                ('name', 'Pete')
+                                ('company', 'OrderGroove')
+                            ```
+
+                            ```
+                                mounts = open('/etc/fstab', 'r')
+                                for mount in mounts:
+                                    print mount
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            #### Lines structure
+                            - Any sentence can end with a "end of line" or a semicolon (;)
+
+                            ```
+                               spam = 1
+                               eggs = 2
+                            ```
+
+                            ```
+                                spam = 1; eggs = 2
+                            ```
+
+                            ```
+                                # not commonly used
+                                spam = 1;
+                                eggs = 2;
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            #### Indentation
+                            - Blocks are defined by the indentation level
+                            - Sentences that end with (:) define a new block
+                            - You can use spaces and/or tabs to indent. Avoid tabs
+                            - 4 spaces indentation is commonly used (multiple of 4)
+                            - Empty blocks are not allowed. Empty sentence "pass" should be used
+                            ```
+                                if a:
+                                    foo
+                                    bar
+                                elif b:
+                                    pass
+                                elif c:
+                                    eggs
+                                        spam    # error
+                                else:
+                                            ugly  # but valid!
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            #### Comments & Documentation
+                            - Hush symbol (#) indicates the begining of a comment
+                            - Comments do not have to be indented (but its better if they are)
+                            - If the first sentence of a module, class or function is a literal string,
+                            compiler takes is the object documentation
+                            ```
+                                >>> def with_doc(): # un comentario
+                                ...     "this is documentation"
+                                ...     pass
+                                ...
+                                >>> help(with_doc)
+                                Help on function with_doc in module __main__:
+
+                                with_doc()
+                                    this is documentation
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            #### Literal booleans
+                            - True == bool(1)
+                            - False == bool(0)
+                            - They are not reserved words in python2!
+                            ```
+                                >>> True
+                                True
+                                >>> type(True)
+                                <type 'bool'>
+                                >>> True = "nasty"
+                                >>> True
+                                nasty
+                                >>> True = False #real nasty
+                                >>> if not True:
+                                        print("impossible")
+                                impossible
+                                >>> True = bool(1) #restore
+                            ```
+                            ```
+                                >>> int(True)
+                                1
+                                >>> int(False)
+                                0
+                                >>> True + 2
+                                3
+                                >>> bool.__bases__
+                                (<type 'int'>,)
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            #### Literal Strings
+                            ```
+                                >>> print("Simple")
+                                simple
+                                >>> print("how're you doing")
+                                how're you doing
+                                >>> print('"Thank you"')
+                                "Thank you"
+                                >>> print("""Multi line
+                                ... string""")
+                                Multi line\nstring
+                                >>> print("Hello " 'world')
+                                Hello world
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            #### Functions
+                            - The keyword "def" introduces a function definition
+                            - It must be followed by the function name and the parenthesized list of formal parameters
+                            - The first statement of the function body can optionally be a string literal; this string literal is the function's documentation string, or docstring
+                            - Calling a function with wrong args number, will raise a TypeError
+                            - If a return statement is not present, None value is returned
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ```
+                                >>> def add(x,y):
+                                ...    return x+y
+                                ...
+                                >>> add(10,20) == 30
+                                True
+                            ```
+                            ```
+                                >>> add()
+                                TypeError: add() takes
+                                exactly 2 arguments (0 given)
+                                >>> add(1,2,3)
+                                TypeError: add() takes
+                                exactly 2 arguments (3 given)
+                            ```
+                            ```
+                                def just_do_something(l):
+                                    l.append(10)
+
+                                >>> just_do_something([1]) == [1,10]
+                                False
+                                >>> just_do_something([1]) is None
+                                True
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Default Parameter Values
+                            ```
+                                >>> def defaults(a,b=10,c=False):
+                                ...     print(a,b,c)
+                                ...
+                                >>> defaults(5)
+                                (5, 10, False)
+                                >>> defaults()
+                                Traceback (most recent call last):
+                                  File "<stdin>", line 1, in <module>
+                                TypeError: defaults() takes at least 1 argument (0 given)
+                                >>> defaults(1,2,3)
+                                (1, 2, 3)
+                                >>> defaults(1,c=3)
+                                (1, 10, 3)
+                            ```
+                            - If a parameter has a default value, all following parameters must also have a default value
+                            - Be careful when using a “mutable” object as a <a href="http://effbot.org/zone/default-values.htm" target="_blank">default value</a>
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Variable-length arguments
+                            - You may need to process a function for more arguments than you specified
+                            - By placing an asterisk (*) before the variable name
+                            - If *args is defined, name args is asociated to a tuple (0+ arguments)
+                            - Variable-length of keyword arguments is supported with (**) prefix
+                            - If **kwargs is defined, variable kwargs is dictionary (key:value)
+                            - You can combine *args and **kwargs
+                            ```
+                                >>> def varargs(a, b=None, *args, **kwargs):
+                                ...    print(a,b,args, kwargs)
+                                ...
+                                >>> varargs(10)
+                                (10, None, (), {})
+                                >>> varargs(10, 'next')
+                                (10, 'next', (), {})
+                                >>> varargs(1,2,3,4,5,6,another=7)
+                                (1, 2, (3, 4, 5, 6), {'another': 7})
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Pass by reference vs value
+                            - All parameters (arguments) in the Python are passed by reference
+                            - Is that so? Well, the parameter passed in is actually a reference to a variable (but the reference is passed by value)
+                            What??
+
+                            Passing a mutable object into a method
+                            ```
+                                def try_to_change_list_contents(the_list):
+                                    print 'got', the_list
+                                    the_list.append('four')
+                                    print 'changed to', the_list
+
+                                outer_list = ['one', 'two', 'three']
+
+                                print 'before, outer_list =', outer_list
+                                try_to_change_list_contents(outer_list)
+                                print 'after, outer_list =', outer_list
+                            ```
+                            Output:
+                            ```
+                                before, outer_list = ['one', 'two', 'three']
+                                got ['one', 'two', 'three']
+                                changed to ['one', 'two', 'three', 'four']
+                                after, outer_list = ['one', 'two', 'three', 'four']
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            Now let's see what happens when we try to change the reference that was passed in as a parameter:
+                            ```
+                                def try_to_change_list_reference(the_list):
+                                    print 'got', the_list
+                                    the_list = ['and', 'we', 'can', 'not', 'lie']
+                                    print 'set to', the_list
+
+                                outer_list = ['we', 'like', 'proper', 'English']
+
+                                print 'before, outer_list =', outer_list
+                                try_to_change_list_reference(outer_list)
+                                print 'after, outer_list =', outer_list
+                            ```
+                            Output:
+                            ```
+                                before, outer_list = ['we', 'like', 'proper', 'English']
+                                got ['we', 'like', 'proper', 'English']
+                                set to ['and', 'we', 'can', 'not', 'lie']
+                                after, outer_list = ['we', 'like', 'proper', 'English']
+                            ```
+                            "Since the the_list parameter was passed by value, assigning a new list to it had no effect that the code outside the method could see"
+
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            Passing a immutable object into a method
+                            ```
+                                def try_to_change_string_reference(the_string):
+                                    print 'got', the_string
+                                    the_string = 'In a kingdom by the sea'
+                                    print 'set to', the_string
+
+                                outer_string = 'It was many and many a year ago'
+
+                                print 'before, outer_string =', outer_string
+                                try_to_change_string_reference(outer_string)
+                                print 'after, outer_string =', outer_string
+                            ```
+                            Output:
+                            ```
+                                before, outer_string = It was many and many a year ago
+                                got It was many and many a year ago
+                                set to In a kingdom by the sea
+                                after, outer_string = It was many and many a year ago
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Scopes
+                            - At any time during execution, there are at least three nested scopes whose namespaces are
+                            directly accessible: local, global, built-in
+                            - Built-in is provied by the interpreter (True, max(), object, type, etc)
+                            - Python searches on the innermost scope first, module's global names next, and built-in names at last
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Scope in functions
+                            - If a name is bound at the module level, it is a global variable
+                            - If a name is bound in a block, it is a local variable of that block
+                            - If the global statement occurs within a block, all uses of the name specified in the statement refer to the binding of that name in the top-level namespace.
+                            ```
+                                >>> a=10
+                                >>> def f():
+                                ...    a=20
+                                ...
+                                >>> f()
+                                >>> a
+                                10
+                                >>> def g():
+                                ...    global a
+                                ...    a=20
+                                ...
+                                >>> g()
+                                >>> a
+                                20
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Functions as first-class citizens
+                            - A function can be defined on almost any point in the code:
+                                - As a Method in a Class (most common case)
+                                - As a function within a module (second most common case)
+                                - As a nasted function (Closures, third most common case)
+                                - Sentence <b>def</b> is used for those case (we will see an alternative)
+                            ```
+                                >>> def f1():
+                                ...    pass
+                                ...
+                                >>> type(f)
+                                <type 'function'>
+                                >>> class withMethods(object):
+                                ...    def f2(self):
+                                ...        pass
+                                ...    f3 = f1
+                                ...
+                                >>> withMethods.f2
+                                <unbound method withMethods.f2>
+                                >>> withMethods.f3
+                                <unbound method withMethods.f1>
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Closures
+                            - A closure occurs when a function has access to a local variable from an enclosing scope that has finished its execution
+                            ```
+                                >>> def makeInc(x):
+                                        def inc(y):
+                                            # x is "closed" in the definition of inc
+                                            return y + x
+
+                                        return inc
+
+                                >>> inc5 = makeInc(5)
+                                >>> inc10 = makeInc(10)
+
+                                >>> inc5(5)   # returns 10
+                                >>> inc10(5)  # returns 15
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Closures (2)
+                            - The nonlocal statement is a close cousin to global
+                            - nonlocal applies to a name in an enclosing function’s scope, not the global module scope
+                            ```
+                                >>> def outer():
+                                       x = 1
+                                       def inner():
+                                           nonlocal x
+                                           x = 2
+                                           print("inner:", x)
+                                       inner()
+                                       print("outer:", x)
+
+                                >>> outer()
+                                inner: 2
+                                outer: 2
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Decorators
+                            - Based on the Decorator Pattern
+                            - Decorators allow you to inject or modify code in functions or classes (sounds like Aspect-Oriented Programming (AOP) in Java, doesn't it?)
+                            - The @ indicates the application of the decorator (don't confuse with java annotations)
+                            - Decorators help reducing boilerplate code
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ```
+                                >>> def makebold(fn):
+                                        def wrapped():
+                                            return "<b>" + fn() + "</b>"
+                                        return wrapped
+
+                                >>> def makeitalic(fn):
+                                        def wrapped():
+                                            return "<i>" + fn() + "</i>"
+                                        return wrapped
+
+                                    @makebold
+                                    @makeitalic
+                                    def hello():
+                                        return "hello world"
+
+                                >>> print hello() ## returns <b><i>hello world</i></b>
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Iterator Protocol and the For loop
+                            - Iterator objects in python conform to the iterator protocol, which basically means they provide two methods: ```__iter__()``` and ```next()```
+                            - The ```__iter__``` returns the iterator object
+                            - The next() method returns the next value
+                            - If there are no further items, raise the StopIteration exception
+                            - The For loop is based on this iterator protocol
+                            ```
+                                some_list = [1,2,3,4,5]
+                                def sum(l, default=0):
+                                    total=default
+                                    for x in l:
+                                        total += x
+                                    return total
+                                def sum2(l, default=0):
+                                    total=default
+                                    iterable = iter(l)
+                                    try:
+                                        while True:
+                                            x = next(iterable)
+                                            total += x
+                                    except StopIteration:
+                                        pass
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ```
+                                >>> s = 'abc'
+                                >>> it = iter(s)
+                                >>> it
+                                <iterator object at 0x00A1DB50>
+                                >>> it.next()  # __next__ from Python 3
+                                'a'
+                                >>> it.next()
+                                'b'
+                                >>> it.next()
+                                'c'
+                                >>> it.next()
+                                Traceback (most recent call last):
+                                  File "<stdin>", line 1, in ?
+                                    it.next()
+                                StopIteration
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ```
+                                class Counter:
+                                    def __init__(self, low, high):
+                                        self.current = low
+                                        self.high = high
+
+                                    def __iter__(self):
+                                        return self
+
+                                    def next(self): # Python 3: def __next__(self)
+                                        if self.current > self.high:
+                                            raise StopIteration
+                                        else:
+                                            self.current += 1
+                                            return self.current - 1
+
+                                for c in Counter(3, 8):
+                                    print c
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Generators
+                            - Generators are a simple and powerful tool for creating iterators
+                            - Use the <b>yield</b> statement whenever they want to return data
+                            - Using a <b>yield</b> expression in a function definition is sufficient to cause that definition to create a generator function instead of a normal function
+                            - Each time next() is called, the generator resumes where it left-off (it remembers all the data values and which statement was last executed)
+                            - What makes generators so compact is that the ```__iter__()``` and ```next()``` methods are created automatically
+                            - Local variables and execution state are automatically saved between calls
+                            - When generators terminate, they automatically raise StopIteration
+                            - yield and return under the same def structure is not allowed!
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ```
+                                def counter(low, high):
+                                    current = low
+                                    while current <= high:
+                                        yield current
+                                        current += 1
+
+                                for c in counter(3, 8):
+                                    print c
+                            ```
+                            ```
+                                >>> def up_to(n, start=0):
+                                ...     current = start
+                                ...     while (current < n):
+                                ...         yield current
+                                ...         current+=1
+                                ...
+                                ...
+                                >>> count = up_to(3)
+                                >>> next(count)
+                                0
+                                >>> next(count)
+                                1
+                                >>> next(count)
+                                2
+                                >>> next(count)
+                                StopIteration:     Traceback ...
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### What you are missing
+                            - Coroutines
+                            - Classes - Metaclasses - OOP
+                            - Exceptions
+                            - and much more...
+
+                            ### Thank you!!
+
+                        </script>
+                    </section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Parallax scrolling
+				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+				// parallaxBackgroundSize: '2100px 900px',
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
