@@ -41,7 +41,7 @@
                             # Python
                         </script>
                     </section>
-                    <section data-markdown id="creating-objects">
+                    <section data-markdown>
                         <script type="text/template">
                             ### Quick Introduction
 
@@ -115,7 +115,7 @@
                             ### Conditionals
 
 
-                            ```
+                            ```python
                                 if boolean_expression:
                                     block
                                 elif another_boolean_expression:
@@ -136,7 +136,7 @@
                             - Strings can be indexed, with the first character having index 0
                             - Slicing is also supported
                             - While indexing is used to obtain individual characters, slicing allows you to obtain substring [start:stop:step]
-                            ```
+                            ```python
                                 >>> a="hello world"
                                 >>> a[0]
                                 'h'
@@ -163,7 +163,7 @@
                         - From python 2.6 format method, similar to C's printf
 
                         ```'{0} %s {1}'.format('foo', 'bar')```
-                        ```
+                        ```python
                             >>> print(a + ", how're you doin'")
                             hello world, how're you doin'
                             >>> a + 16
@@ -183,7 +183,7 @@
                         - Lists might contain items of different types
                         - Literal List construction is supported
 
-                        ```
+                        ```python
                             >>> a = ['hello', 'world', 1, 2]
                             >>> a[0]
                             'hello'
@@ -201,7 +201,7 @@
                     </section>
                     <section data-markdown>
                         <script type="text/template">
-                        ```
+                        ```python
                             >>> a
                             ['hello', False, 1, 2]
                             >>> a.append("extra")
@@ -224,7 +224,7 @@
                         <script type="text/template">
                         ### Tuples
                         - Similar to Lists, but immutable
-                        ```
+                        ```python
                             >>> t = ('hello', 1, 2, 3)
                             >>> t[0] = 10
                             Traceback (most recent call last):
@@ -244,7 +244,7 @@
                         - Also known as Maps, Hashes, key-value stores.
                         - Literal way: {key: value, ...}
 
-                        ```
+                        ```python
                         import datetime
                         user = {
                             'name': 'Walter',
@@ -279,7 +279,7 @@
                         - Unordered collections of unique elements
                         - Common uses include removing duplicates from a sequence and computing standard math operations on sets such as intersection, union, etc.
 
-                        ```
+                        ```python
                             >>> s = set([1,2,3]) # no literal constrcution on 2.6
                             >>> s = {1,2,3} # since python 2.7+
                             >>> len(s)
@@ -304,7 +304,7 @@
                             - Most popular loop is the "for loop" (WhileLoop as alternative)
                             - Takes an iterable object (explained later) and execute the block for each iteration
                             - Sequences, as other types, allow iterations
-                            ```
+                            ```python
                                 >>>for i in [5,6]
                                 ...  for j in [10,18]:
                                 ...    print(gcd(i,j))
@@ -319,7 +319,7 @@
                     <section data-markdown>
                         <script type="text/template">
                             #### More examples
-                            ```
+                            ```python
                                     >>> for c in "hello":
                                     ...   print(c)
                                     ...
@@ -329,7 +329,7 @@
                                     l
                                     o
                             ```
-                            ```
+                            ```python
                                 >>> d = {'name': 'Pete', 'company': 'OrderGroove'}
                                 >>> for k in d:
                                 ...   print(k,d[k])
@@ -338,7 +338,7 @@
                                 ('company', 'OrderGroove')
                             ```
 
-                            ```
+                            ```python
                                 mounts = open('/etc/fstab', 'r')
                                 for mount in mounts:
                                     print mount
@@ -350,16 +350,16 @@
                             #### Lines structure
                             - Any sentence can end with a "end of line" or a semicolon (;)
 
-                            ```
+                            ```python
                                spam = 1
                                eggs = 2
                             ```
 
-                            ```
+                            ```python
                                 spam = 1; eggs = 2
                             ```
 
-                            ```
+                            ```python
                                 # not commonly used
                                 spam = 1;
                                 eggs = 2;
@@ -374,7 +374,7 @@
                             - You can use spaces and/or tabs to indent. Avoid tabs
                             - 4 spaces indentation is commonly used (multiple of 4)
                             - Empty blocks are not allowed. Empty sentence "pass" should be used
-                            ```
+                            ```python
                                 if a:
                                     foo
                                     bar
@@ -395,7 +395,7 @@
                             - Comments do not have to be indented (but its better if they are)
                             - If the first sentence of a module, class or function is a literal string,
                             compiler takes is the object documentation
-                            ```
+                            ```python
                                 >>> def with_doc(): # un comentario
                                 ...     "this is documentation"
                                 ...     pass
@@ -414,7 +414,7 @@
                             - True == bool(1)
                             - False == bool(0)
                             - They are not reserved words in python2!
-                            ```
+                            ```python
                                 >>> True
                                 True
                                 >>> type(True)
@@ -428,7 +428,7 @@
                                 impossible
                                 >>> True = bool(1) #restore
                             ```
-                            ```
+                            ```python
                                 >>> int(True)
                                 1
                                 >>> int(False)
@@ -443,7 +443,7 @@
                     <section data-markdown>
                         <script type="text/template">
                             #### Literal Strings
-                            ```
+                            ```python
                                 >>> print("Simple")
                                 simple
                                 >>> print("how're you doing")
@@ -470,14 +470,14 @@
                     </section>
                     <section data-markdown>
                         <script type="text/template">
-                            ```
+                            ```python
                                 >>> def add(x,y):
                                 ...    return x+y
                                 ...
                                 >>> add(10,20) == 30
                                 True
                             ```
-                            ```
+                            ```python
                                 >>> add()
                                 TypeError: add() takes
                                 exactly 2 arguments (0 given)
@@ -485,7 +485,7 @@
                                 TypeError: add() takes
                                 exactly 2 arguments (3 given)
                             ```
-                            ```
+                            ```python
                                 def just_do_something(l):
                                     l.append(10)
 
@@ -499,7 +499,7 @@
                     <section data-markdown>
                         <script type="text/template">
                             ### Default Parameter Values
-                            ```
+                            ```python
                                 >>> def defaults(a,b=10,c=False):
                                 ...     print(a,b,c)
                                 ...
@@ -526,8 +526,8 @@
                             - If *args is defined, name args is asociated to a tuple (0+ arguments)
                             - Variable-length of keyword arguments is supported with (**) prefix
                             - If **kwargs is defined, variable kwargs is dictionary (key:value)
-                            - You can combine *args and **kwargs
-                            ```
+                            - You can combine ```*args and **kwargs```
+                            ```python
                                 >>> def varargs(a, b=None, *args, **kwargs):
                                 ...    print(a,b,args, kwargs)
                                 ...
@@ -548,7 +548,7 @@
                             What??
 
                             Passing a mutable object into a method
-                            ```
+                            ```python
                                 def try_to_change_list_contents(the_list):
                                     print 'got', the_list
                                     the_list.append('four')
@@ -561,7 +561,7 @@
                                 print 'after, outer_list =', outer_list
                             ```
                             Output:
-                            ```
+                            ```python
                                 before, outer_list = ['one', 'two', 'three']
                                 got ['one', 'two', 'three']
                                 changed to ['one', 'two', 'three', 'four']
@@ -572,7 +572,7 @@
                     <section data-markdown>
                         <script type="text/template">
                             Now let's see what happens when we try to change the reference that was passed in as a parameter:
-                            ```
+                            ```python
                                 def try_to_change_list_reference(the_list):
                                     print 'got', the_list
                                     the_list = ['and', 'we', 'can', 'not', 'lie']
@@ -585,7 +585,7 @@
                                 print 'after, outer_list =', outer_list
                             ```
                             Output:
-                            ```
+                            ```python
                                 before, outer_list = ['we', 'like', 'proper', 'English']
                                 got ['we', 'like', 'proper', 'English']
                                 set to ['and', 'we', 'can', 'not', 'lie']
@@ -598,7 +598,7 @@
                     <section data-markdown>
                         <script type="text/template">
                             Passing a immutable object into a method
-                            ```
+                            ```python
                                 def try_to_change_string_reference(the_string):
                                     print 'got', the_string
                                     the_string = 'In a kingdom by the sea'
@@ -611,7 +611,7 @@
                                 print 'after, outer_string =', outer_string
                             ```
                             Output:
-                            ```
+                            ```python
                                 before, outer_string = It was many and many a year ago
                                 got It was many and many a year ago
                                 set to In a kingdom by the sea
@@ -634,7 +634,7 @@
                             - If a name is bound at the module level, it is a global variable
                             - If a name is bound in a block, it is a local variable of that block
                             - If the global statement occurs within a block, all uses of the name specified in the statement refer to the binding of that name in the top-level namespace.
-                            ```
+                            ```python
                                 >>> a=10
                                 >>> def f():
                                 ...    a=20
@@ -660,7 +660,7 @@
                                 - As a function within a module (second most common case)
                                 - As a nasted function (Closures, third most common case)
                                 - Sentence <b>def</b> is used for those case (we will see an alternative)
-                            ```
+                            ```python
                                 >>> def f1():
                                 ...    pass
                                 ...
@@ -682,7 +682,7 @@
                         <script type="text/template">
                             ### Closures
                             - A closure occurs when a function has access to a local variable from an enclosing scope that has finished its execution
-                            ```
+                            ```python
                                 >>> def makeInc(x):
                                         def inc(y):
                                             # x is "closed" in the definition of inc
@@ -703,7 +703,7 @@
                             ### Closures (2)
                             - The nonlocal statement is a close cousin to global
                             - nonlocal applies to a name in an enclosing function’s scope, not the global module scope
-                            ```
+                            ```python
                                 >>> def outer():
                                        x = 1
                                        def inner():
@@ -730,7 +730,7 @@
                     </section>
                     <section data-markdown>
                         <script type="text/template">
-                            ```
+                            ```python
                                 >>> def makebold(fn):
                                         def wrapped():
                                             return "<b>" + fn() + "</b>"
@@ -758,7 +758,7 @@
                             - The next() method returns the next value
                             - If there are no further items, raise the StopIteration exception
                             - The For loop is based on this iterator protocol
-                            ```
+                            ```python
                                 some_list = [1,2,3,4,5]
                                 def sum(l, default=0):
                                     total=default
@@ -779,7 +779,7 @@
                     </section>
                     <section data-markdown>
                         <script type="text/template">
-                            ```
+                            ```python
                                 >>> s = 'abc'
                                 >>> it = iter(s)
                                 >>> it
@@ -800,7 +800,7 @@
                     </section>
                     <section data-markdown>
                         <script type="text/template">
-                            ```
+                            ```python
                                 class Counter:
                                     def __init__(self, low, high):
                                         self.current = low
@@ -836,7 +836,7 @@
                     </section>
                     <section data-markdown>
                         <script type="text/template">
-                            ```
+                            ```python
                                 def counter(low, high):
                                     current = low
                                     while current <= high:
@@ -846,7 +846,7 @@
                                 for c in counter(3, 8):
                                     print c
                             ```
-                            ```
+                            ```python
                                 >>> def up_to(n, start=0):
                                 ...     current = start
                                 ...     while (current < n):
