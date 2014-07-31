@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Python - OrderGroove</title>
+		<title>Python talks - Walter Brunetti</title>
 
 		<meta name="description" content="Introduction to Python - Ordergroove">
 		<meta name="author" content="Walter M Brunetti">
@@ -23,6 +23,9 @@
 		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
 		<script>
 			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+
+         <!--   Para imprimir hay que usar Firefox, comentando la linea de arriba y descomentando la siguiente: -->
+          <!-- <link rel="stylesheet" href="css/print/paper.css" media="print"> -->
 		</script>
 
 		<!--[if lt IE 9]>
@@ -868,14 +871,919 @@
                     </section>
                     <section data-markdown>
                         <script type="text/template">
-                            ### What you are missing
-                            - Coroutines
-                            - Classes - Metaclasses - OOP
-                            - Exceptions
-                            - and much more...
+                            # Python
+                            ### Day 2
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Construcción de classes via __class__
+                            - el statement class crea un nuevo namespace
+                            - el bloque de código dentro de un class tiene como scope local ese nuevo namespace
+                            - el scope global es el módulo donde está definido
+                            - el bloque se ejecuta al construirse la clase
+                            - se pueden definir funciones y clases dentro del cuerpo de una clase
+                            - al cerrarse el bloque, una clase queda compuesta por los valores enlazados en el scope local. (atributos de clase)
+                            - las funciones referenciadas son promovidas a métodos
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ```python
 
-                            ### Thank you!!
+                            class Nombre(object):
+                                """docstring"""
+                                some_var=True
+                                another=0
+                                def f(self):
+                                    pass
 
+                                for x in range(10): #unusual, valid
+                                    another += x
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Instancias e inicialización
+                            - Una clase es un objeto
+                            - En particular, es un objeto que puede ser llamado (callable)
+                            - Llamar a una clase construye una nueva instancia
+                            - El método ```__init__```, si está definido, se llama luego de creado el nuevo objeto
+                            ```python
+                            >>> class MyClass(object):
+                            ...    def __init__(self, some_number):
+                            ...        self.number = some_number
+                            ...        print('initializing')
+                            ...
+                            >>>
+                            >>> i = MyClass(10)
+                            initializing
+                            >>> i.number
+                            10
+                            >>>
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Atributos
+                            - El namespace que se genera al construir una clase se implementa con un diccionario (```clase.__dict__```)
+                            - MiClase.atributo se busca via ```MiClase.__dict__['atributo']```
+                            - Si un atributo no se encuentra en la clase, se busca en sus subclases (Method resolution order, C3)
+                            - Las asignaciones siempre suceden en el diccionario de la clase, no en sus bases
+                            - Hay una serie de hooks para interceptar el acceso a atributos (getattr, descriptors)
+                            - Las instancias construyen su propio namespace
+                            - La búsqueda de atributos de una instancia comienza por el diccionario de la instancia, sigue en su clase y bases
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ```python
+                            >>> class Attrs(object):
+                            ...    a=10
+                            ...    def method(self):
+                            ...       pass
+                            ...
+                            >>> Attrs.a
+                            10
+                            >>> print(Attrs.__dict__)
+                            {'a': 10, 'method': <function method at 0xb76fa7d4>, ...}
+                            >>> instance = Attrs()
+                            >>> instance.a
+                            10
+                            >>> instance.a=20
+                            >>> instance.a
+                            20
+                            >>> Attrs.a
+                            10
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Métodos
+                            - Se construyen a partir de funciones
+                            - El namespace de clase no está visible en el cuerpo de una función
+                            - El primer argumento es provisto por el enlace entre un método y una instancia (instancemethod) o una clase (classmethod)
+                            - Por defecto todas las funciones encontradas en un scope de clase se envuelven en instancemethods
+                            - Un método puede estar bound o unbound
+                            - StaticMethod es una función común anidada en una clase
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ```python
+                                >>> class Methods(object):
+                                ...     def method1(self, n):
+                                ...         print(n)
+                                ...         print(self)
+                                ...     @classmethod
+                                ...     def method2(cls, n):
+                                ...         print(cls)
+                                ...     @staticmethod
+                                ...     def method3(n):
+                                ...         print(n)
+                            ```
+                            ```python
+                                >>> m = Methods()
+                                >>> m.method1(10)
+                                10
+                                <__main__.Methods object at 0xb7704d0c>
+                                >>> m.method2(20)
+                                <class '__main__.Methods'>
+                                >>> m.method3(30)
+                                30
+                                >>> m.method1
+                                <bound method Methods.method1 of
+                                <__main__.Methods object at 0xb7704d0c>>
+                                >>> m.method2
+                                <bound method type.method2 of
+                                <class '__main__.Methods'>>
+                                >>> m.method3
+                                <function method3 at 0xb76fae9c>
+                                >>> Methods.method1
+                                <unbound method Methods.method1>
+                                >>> Methods.method2
+                                <bound method type.method2 of
+                                <class '__main__.Methods'>>
+                                >>> Methods.method3
+                                <function method3 at 0xb76fae9c>
+
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Herencia
+                            - Especificada como una tupla de bases
+                            - La herencia extiende un espacio de nombres con el de las bases
+                            - Los atributos se buscan en la jerarquía de clases antes de fallar con AttributeError
+                            - ```__mro__``` muestra la secuencia de búsqueda para un objeto dado
+
+                            ```python
+                            >>> class base1(object):
+                            ...    a=10
+                            >>> class base2(object):
+                            ...    a=20
+                            ...    b=30
+                            >>> class inherit1(base1):
+                            ...     pass
+                            ...
+                            >>> class inherit2(base1, base2):
+                            ...     pass
+                            >>> inherit1.a
+                            10
+                            >>> inherit2.a
+                            10
+                            >>> inherit2.b
+                            30
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Interceptar atributos con getattr, setattr
+                            - Si una clase implementa ```__getattr__``` / ```__setattr__``` puede modificar el acceso a atributos
+                            - Se llama a ```__getattr__``` luego de no encontrar el atributo por el método tradicional
+                            - ```__setattr__(self, name, value)``` intercepta la asignación de atributos
+                            - ```__delattr__(self, name)``` intercepta del object.attribute
+                            - Alternativa al operador atributo (.) getattr(obj, attribute_name, [default])
+                            - También ```__setattr__(self, attr_name, value)```, hasattr(obj, attr_name)
+                            - ```__getattribute__(self, name)``` es la forma incondicional de ```__getattr__```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ```python
+                                >>> class Intercept(object):
+                                ...     def __getattr__(self, attr):
+                                ...         return 'intercepted_' + attr
+                                ...     def __setattr__(self, attr, value):
+                                ...         print('refusing to set')
+                                ...
+                                >>>
+                                >>> i = Intercept()
+                                >>> i.test
+                                'intercepted_test'
+                                >>> i.another
+                                'intercepted_another'
+                                >>> i.test=10
+                                refusing to set
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Classic classes y new-style classes
+                            - En python < 2.2, class construía un class object
+                            - Las instancias de un class object tienen tipo class instances
+                            - Distinción via atributo ```__class__```
+                            - En python2.2 se unificaron tipos y clases
+                            - class MiClase(object) define un nuevo tipo
+                            - Sus instancias son de tipo MiClase
+                            - object pasó a ser la base de todos los objetos
+                            - Los tipos builtin pueden ser heredados/extendidos
+                            - No hay classic classes en Python3
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ```python
+                            >>> class classic:
+                            ...    pass
+
+                            >>> class newstyle(object):
+                            ...    pass
+
+                            >>> type(classic)
+                            <type 'classobj'>
+                            >>> type(newstyle)
+                            <type 'type'>
+                            >>> c = classic()
+                            >>> n = newstyle()
+                            >>> type(c)
+                            <type 'instance'>
+                            >>> type(n)
+                            <class '__main__.newstyle'>
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Class Decorators
+                            - Equivalente a decoradores de funciones
+                            - No están obligados a devolver una clase
+
+                            ```python
+                                >>> def add_attribute(name, value):
+                                ...    def wrap_cls(cls):
+                                ...       setattr(cls, name, value)
+                                ...       return cls
+                                ...    return wrap_cls
+                                ...
+                                >>> @add_attribute('hello', 'world')
+                                ... class empty(object):
+                                ...    pass
+                                ...
+                                >>> empty
+                                <class '__main__.empty'>
+                                >>> empty.hello
+                                'world'
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Descriptors
+                            - Los descriptores permiten implementar atributos con acceso controlado
+                            - Un descriptor implementa los accesos get, set y delete
+                            <!--- Tienen sentido sólo como atributos de clase-->
+                            - Deben ser new-style classes
+
+                            ```python
+                            class RevealAccess(object):
+                                """A data descriptor that sets and returns values
+                                   normally and prints a message logging their access.
+                                """
+
+                                def __init__(self, initval=None, name='var'):
+                                    self.val = initval
+                                    self.name = name
+
+                                def __get__(self, obj, cls):
+                                    print 'Retrieving', self.name
+                                    return self.val
+
+                                def __set__(self, obj, val):
+                                    print 'Updating', self.name
+                                    self.val = val
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Descriptors (2)
+
+                            - Dos maneras típicas de acceder a un descriptor - Asociado a una instancia - Asociado a una clase
+                            ```python
+                                >>> class MyClass(object):
+                                        x = RevealAccess(10, 'var "x"')
+                                        y = 5
+
+                                >>> m = MyClass()
+                                >>> m.x
+                                Retrieving var "x"
+                                10
+                                >>> m.x = 20
+                                Updating var "x"
+                                >>> m.x
+                                Retrieving var "x"
+                                20
+                                >>> m.y
+                                5
+                            ```
+                            ```python
+                                MyClass.x  # self=None, cls=MyClass
+                            ```
+                        </script>
+                    </section>
+                    <!--<section data-markdown>-->
+                        <!--<script type="text/template">-->
+                            <!--### Title-->
+                            <!--- Item aca va lo de property decorator-->
+                            <!--```python-->
+
+                            <!--```-->
+                        <!--</script>-->
+                    <!--</section>-->
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Instancias, ```__new__``` y ```__delete__ ```
+
+                            - Que se ejecuta cuando llamamos a una clase?
+                            - ```__new__``` es el real constructor de instancias
+                            - Puede ```__new__``` devolver algo diferente a una instancia de su clase?
+                            - ```__new__``` is for object creation - ```__init__``` is for object initialization
+                            - Por qué no se ejecuta ```__delete__``` ?
+                            - del es el opuesto a la asignación ('=') - desasocia un nombre de un valor - puede implicar que el garbage collector elimine el valor
+                            - cuando del opera sobre un atributo, delega la operación al objeto que contiene el atributo instancia.attr
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ```python
+                                class Empty(object):
+                                    pass
+
+                                e1 = Empty()
+
+                                #equivalente a
+                                e2 = Empty.__new__(Empty)
+
+                                if isinstance(e2,Empty):
+                                    Empty.__init__(e2)
+                            ```
+                            ```python
+                                class MyClass(object):
+                                    def __new__(cls, *args, **kwargs):
+                                        return "string"
+
+
+                                m = MyClass()
+                                type(m)
+                                <type 'str'>
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Tipos, clases, instanceof
+                            - Todos los objetos tienen un tipo
+                            - Para new style classes, el tipo de sus instancias es su clase
+                            - Para classic classes (python2), el tipo es 'instance'
+                            - type(object) devuelve el tipo del objeto
+                            - isinstance(object, class) recorre la jerarquía de herencia y devuelve True si object tiene en sus bases a class
+                            - alternativa: isinstance(object, (c1, c2, c3,...))
+                            - issubclass chequea la jerarquía de herencia
+
+                            ```python
+                            >>> type(10)
+                            <type 'int'>
+                            >>> isinstance(10,(int, float))
+                            True
+                            >>> isinstance(10, type(20))
+                            True
+                            >>> issubclass(bool, int)
+                            True
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Construcción de clases y Metaclases
+
+                            - Algunas cosas que pasan al construir una clase
+                            - Funciones se convierten en métodos
+                            - ```__new__``` se convierte en classmethod
+                            - Las variables enlazadas en el cuerpo de una clase se convierten en atributos
+                            - Suena a un algoritmo, podríamos implementar uno diferente?
+                            - Metaclases son a las clases como las clases son a las instancias
+                            - Las metaclases se implementan con clases (```__new__``` e ```__init__```). Generalmente heredan de type
+                            - Se usa el atributo ```__metaclass__``` para especificar qué metaclase utilizar. (python2)
+                            - Se usa class MiClase(base1, base2, metaclass=cls) en python3
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ```python
+                                class CamelCase(type):
+                                    @staticmethod
+                                    def camel(word):
+                                        return ''.join(s.capitalize() for s in word.split('_'))
+                                    def __new__(meta, classname, bases, namespace):
+                                        new_namespace = {}
+                                        for k,v in namespace.items():
+                                            if k.startswith('_'):
+                                                new_namespace[k] = v
+                                            else:
+                                                new_namespace[meta.camel(k)] = v
+                                        return type.__new__(meta, classname, bases, new_namespace)
+
+                                class Test1(object):
+                                    __metaclass__ = CamelCase
+                                    var1 = 10
+                                    some_bool = False
+                                    def my_method(self):
+                                        pass
+                            ```
+                            ```python
+                            >>> hasattr(Test1, 'var1')
+                            False
+                            >>> hasattr(Test1, 'some_bool')
+                            False
+                            >>> hasattr(Test1, 'my_method')
+                            False
+                            >>> hasattr(Test1, 'Var1')
+                            True
+                            >>> hasattr(Test1, 'SomeBool')
+                            True
+                            >>> hasattr(Test1, 'MyMethod')
+                            True
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Exceptions
+                            - Las excepciones en python son un mecanismo general para salir del flujo normal de ejecución
+                            - No necesariamente indican un error (StopIteration en un iterador)
+                            - Las excepciones se lanzan con la sentencia raise
+                            - En las primeras versiones python, cualquier objeto se podía lanzar con raise
+                            - Sólo se permiten Instancias descendientes de BaseException o bien old-style classes
+                            - Si se lanza una clase en vez de una instancia, automáticamente se crea una instancia
+                            - En ese caso, __init__ debe tomar solo 1 argumento, self
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Raise - ejemplos
+
+                            ```python
+                                >>> raise BaseException
+                                Traceback (most recent call last):
+                                File "<stdin>", line 1, in <module> BaseException
+
+                                >>> raise 'hello'
+                                Traceback (most recent call last):
+                                File "<stdin>", line 1, in <module>
+                                TypeError: exceptions must be old-style classes or derived from BaseException, not str
+
+                                >>> class old_style:
+                                ...    pass
+                                ...
+                                >>> raise old_style
+                                Traceback (most recent call last):
+                                File "<stdin>", line 1, in <module>
+                                __main__.old_style: <__main__.old_style instance at 0xb765588c>
+                            ```
+                            ```python
+                                >>> class another(BaseException):
+                                ...     def __init__(self, some_argument):
+                                ...        pass
+                                ...
+                                >>> raise another
+                                Traceback (most recent call last):
+                                File "<stdin>", line 1, in <module>
+                                TypeError: __init__() takes exactly 2 arguments (1 given)
+                                >>> raise another(1)
+                                Traceback (most recent call last):
+                                File "<stdin>", line 1, in <module> __main__.another
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Capturar excepciones
+                            - Una excepción se puede capturar utilizando la construcción try ... except
+
+                            ```python
+                               >>> try:
+                                ...   1/0
+                                >>> except SyntaxError:
+                                ...   print('some syntax error')
+                                >>> except ZeroDivisionError:
+                                      print('divison by 0')
+                            ```
+                            - Except toma una tupla de clases y matchea una excepción via isisntance()
+                            - Si la excepción no es capturada en el frame actual, se lanza en el frame superior
+                            - Si no se captura la excepción en ningún frame, el intéprete termina
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Except - sintaxis
+                            - Se puede asociar el objeto excepción a un nombre en except, utilizando as name
+                            - En versiones previas de python, la sintaxis era: except SyntaxError, e
+                            - Puede haber un except sin clases, siempre al final, que captura todas las excepciones
+
+                            ```python
+                                >>> try:
+                                ...    raise OSError
+
+                                >>> try:
+                                ...    raise OSError
+                                >>> except SyntaxError:
+                                ...    pass
+                                >>> except StandardError as e:
+                                ...    print(type(e))
+                                ...
+                                <type 'exceptions.OSError'>
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Exceptions - else
+
+                            - try except acepta un bloque else
+                            - El bloque se ejecuta sólo si no ocurrió una excepción
+                            - Qué diferencia hay con simplemente agregar el contenido de un bloque else a continuación del bloque try?
+                            - Excepciones lanzadas en el bloque else no son capturadas por except
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Exceptions - finally
+                            - se puede definir un bloque finally que se llama incondicionalmente al finalizar el bloque try (con o sin excepciones)
+                            - En caso de haber una excepción, se llama luego del handler
+                            - En caso de no excepción, se llama luego del else (si hay)
+                            - Si el handler o el bloque else lanzan una excepción, esta se guarda temporalmente, se ejecuta el bloque finally y luego se relanza la excepción
+                            - En caso de un break o continue, se ejecuta el bloque finally antes de resumir el bucle for/while
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Exceptions - with
+
+                            - La captura de excepciones puede hacer ilegible un programa
+                            - Python permite construir objetos contexto que encapsulan un try except en un bloque
+
+                            ```python
+                            with File('test.txt') as f:
+                                do_something(f.read())
+                            ...
+                            class File(object): # mock file implementation
+                                def __init__(self, path):
+                                    #open the file
+                                def __enter__(self):
+                                    return self
+                                def __exit__(self, type, value, trace):
+                                    self.close()
+                                    return True
+                            ```
+                            - El statement with object as name tiene el siguiente protocolo:
+
+                            ```
+                            1. se ejecuta el metodo object.__enter__
+                            2. object.__enter__ devuelve un valor, as name
+                            3. se ejecuta el bloque de código dentro del with
+                            4. ante una excepción e, se llama a object.__exit__(type(e), e, sys.gettrace())
+                            5. si finaliza el bloque with sin excep ejecuta object.__exit__(None, None, None)
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            # Modules 
+                            # and 
+                            # packages
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Modules
+                            - Un archivo .py que contiene código python se puede utilizar como un módulo
+                            - Un módulo se utiliza mediante el keyword import
+
+                            ```python
+                                #mymodule.py
+                                a = 10
+                                def foo():
+                                    return False
+                                class Simple:
+                                    pass
+
+                            ```
+                            ```python
+                            >>> import mymodule
+                            >>> mymodule.a
+                                10
+                            >>> mymodule.foo
+                            <function foo at 0x8fb5f44>
+                            ```
+                            - Import mymodule realiza básicamente 3 cosas:
+
+                            ```
+                            - Crea un namespace nuevo, para ser utilizado por el archivo .py que se está
+                              importando
+                            - Ejecuta el código del archivo.py, utilizando el nuevo namespace como scope global
+                            - Se asocia el nombre mymodule con este namespace y sus atributos son accesibles
+                              desde la importación
+                            ```
+
+
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Sintaxis de import
+
+                            - Se pueden importar multiples modulos en un mismo import statement
+
+                            ```python
+                            import os                     # single import
+                            import sys, subprocess, csv   # multiple imports
+                            ```
+
+                            - Se puede especificar que nombre asociar al nuevo namespace, diferente al nombre del módulo
+                            ```python
+                                >>> import custom_socket as socket
+                                >>> import sys as system, subprocess
+                                >>> import sys
+                                >>> sys is system
+                                True
+                            ```
+
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Sintaxis de import (2)
+                            - Que diferencia hay entre correr e importar un archivo .py?
+                            - Cuando se carga un módulo, la variable global ```__name__``` indica el nombre del módulo - Vale '```__main__```' cuando es ejecutado - Vale el nombre del módulo cuando es importado
+
+                            ```python
+                                #main.py
+                                if __name__ == '__main__':
+                                    print('ejecutando')
+                                    call_my_init_function()
+                                else:
+                                    print('importando')
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Sintaxis de import (3)
+
+                            - Se puede importar un subconjunto específico de nombres definidos dentro de un módulo
+                            - El símbolo * indica todos los nombres del módulo
+
+                            ```python
+                                #mymodule.py
+                                a = 10
+                                def foo():
+                                    return False
+                                class Simple:
+                                    pass
+                            ```
+
+                            ```python
+                                >>> from mymodule import a, foo as some_function
+                                >>> a
+                                10
+                                ...
+                                >>> some_function
+                                <function foo at 0x8fb5f44>
+                                ...
+                                >>> Simple
+                                NameError: name 'Simple' is not defined
+                                ...
+                                >>> from mymodule import *
+                                >>> Simple
+                                <class mymodule.Simple at 0xa27002c>
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Search Path
+
+                            - Para cargar un módulo, el intérprete debe encontrar el archivo a ejecutar
+                            - Hay una lista de puntos de búsqueda en sys.path, que se examinan en orden para encontrar el archivo
+                            - Generalmente el primer punto es un string vacío '', que indica el directorio actual
+                            - Además de rutas absolutas y relativas a directorios, se pueden incluir archivos .zip y .egg
+                            - Un archivo .zip se puede expresar como un directorio que contiene otros subdirectorios
+                            - Un archivo .egg es basicamente un zip con metadata (version, dependencias, etc.)
+
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Tipos de archivo a importar
+
+                            - import foo implica buscar en cada entrada de sys.path:
+                                1. Un directorio foo que denote un paquete
+                                2. Un archivo .pyd, .so o .dll (modulo de extensión compilado)
+                                3. Archivos ya traducidos a bytecode y optimizados (.pyo)
+                                4. Archivos ya traducidos a bytecode (.pyc)
+                                5. Archivos fuente .py (y en windows, también .pyw)
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Packages
+
+                            - Los Paquetes permiten agrupar módulos en jerarquías de nombres
+                            - Un package se define con un directorio que contiene un archivo llamado ```__init__.py```
+                            - Se pueden colocar módulos dentro de ese directorio, formarán parte del package
+
+                            ```python
+                                custom_math/
+                                    __init__.py
+                                    scalar.py
+                                    vector/
+                                        __init__.py
+                                        matrix.py
+                            ```
+                            ```python
+                                >>> import custom_math
+                                >>> custom_math.scalar
+                                    AttributeError: 'module' object has no attribute 'scalar'
+                                >>> import custom_math.scalar
+                                    custom_math.scalar
+                                    <module 'custom_math.scalar' from 'custom_math/scalar.py'>
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### ```__init__.py```
+
+                            - Los packages son parte del protocolo de importación, pero se representan con módulos
+                            - Que archivo fuente representa el paquete - modulo custom_path?
+                            - Si es un módulo, debería referenciar un archivo custom_path.py
+                            - Si es un package, ```custom_path/__init__.py```
+                            - ```__init__.py``` puede (y suele) estar vacío
+                            - Los nombres definidos en ```__init__.py``` son inmediatamente accesibles como package.name
+
+                            ```python
+                                #custom_math/__init__.py
+                                scalar = True
+                            ```
+                            ```python
+                                >>> import custom_math
+                                >>> custom_math
+                                <module 'custom_math' from 'custom_math/__init__.pyc'>
+                                >>> custom_math.scalar
+                                True
+                                >>> import custom_math.scalar
+                                >>> custom_math.scalar
+                                <module 'custom_math.scalar' from 'custom_math/scalar.pyc'>
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Import * y ```__all__```
+
+                            - Un módulo puede definir la variable ```__all__``` para controlar que atributos se exportan en from module import *
+                            - En un paquete, ```__all__``` puede definirse en ```__init__.py```
+                            - ```__init__.py``` puede importar otros módulos
+
+                            ```python
+                                #modall.py
+                                __all__ = ['a','b']
+                                a=10
+                                b=20
+                                c=30
+                            ```
+                            ```python
+                                >>> from modall import *
+                                >>> a
+                                10
+                                >>> b
+                                20
+                                >>> c
+                                Traceback (most recent call last):
+                                File "<stdin>", line 1, in <module>
+                                NameError: name 'c' is not defined
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### jerarquías distribuidas y ```__path__```
+
+                            - Además de ```__name__```, un package obtiene una variable ```__path__```, similar a sys.path, pero exclusiva para el package
+                            - ```__init__```.py puede modificar ```__path__``` para incluir otras ubicaciones de módulos para el mismo package
+
+                            ```python
+                                #custom_math/__init__.py
+                                __path__.append('/some/other/path/another_math/')
+                            ```
+                            ```python
+                                #another_math/test.py
+                                t=1
+                            ```
+                            ```python
+                                >>> import (custom_math.scalar, custom_math.test)
+                                >>> custom_math.scalar
+                                <module 'custom_math.scalar' from 'custom_math/scalar.pyc'>
+                                >>> custom_math.test
+                                <module 'custom_math.test' from '/some/other/path/another_math/test.pyc'>
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Imports absolutos y relativos
+
+                            - Dentro de un package, como importar un submódulo?
+                            - hasta python < 2.6, import some_mod dentro de un package busca primero módulos dentro del directorio del package
+                            - desde python 2.6, los imports son absolutos por defecto, buscando siempre en sys.path
+                            - un import relativo es explícito, utilizando la sintaxis from ... import ...
+                            - Se pueden referenciar modulos dentro del paquete similar a un path relativo
+
+                            ```python
+                                #custom_math/__init__.py
+                                import scalar #hasta version < 2.6.
+                                #En 2.6+ puede colisionar con scalar global
+                                from custom_math import scalar
+                                #package path completo
+                                from . import scalar
+                                #relative import, python 2.6+
+                                #en una estructura más compleja:
+                                from ..math.custom import scalar_math as scalar
+                                # .. referencia el paquete que contiene al actual
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### sys.path, PYTHONPATH y site module
+
+                            - Python busca módulos en la lista de fuentes sys.path
+                            - La variable de entorno PYTHONPATH sobrecarga esta lista
+                            - Al iniciar, el interprete importa un módulo llamado site, que generalmente aumenta sys.path para incluir modulos de terceros
+                            - Se deshabilita con la opción -S del intérprete
+
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Distribuir programas y módulos python
+
+                            - Python provee un módulo distutils para estandarizar la instalación de programas y paquetes
+                            - Estructura instalable:
+
+                            ```python
+                                    mymath/
+                                        setup.py
+                                        README.txt
+                                        some_module.py
+                                        some_script.py
+                                        custom_math/
+                                            __init__.py
+                                            scalar.py
+                                            vector/
+                                                __init__.py
+                                                matrix.py
+                            ```
+                            ```python
+                                    #setup.py
+                                    from distutils.core import setup
+                                    setup(name='mymath', version='1.0', py_modules=['some_module'],
+                                        packages=['custom_math'], scripts=['some_script.py'],
+                                    )
+
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Setup.py
+                            - Setup toma otros parametros opcionales, como 'author', 'author_email', 'url', 'description', etc
+                            - setup.py acepta los siguientes subcomandos: * sdist: crea un zip o tar.gz en el subdirectorio sdist/ para distribuir (exluyendo archivos no referenciados del arbol original) * bdist: crea un archivo instalable en la plataforma elegida. soporta rpm, pkg, windows installer * python setup.py bdist --help-formats lista los formatos soportados
+                            - hay otras implementaciones compatibles con distutils que soportan más opciones de instalación (development_mode,scripts automáticos desde módulos, etc)
+                            - El más utilizado es setuptools o el sucesor distribute
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Instalación de módulos de terceros
+
+                            - La mayoría de las aplicaciones son instalables desde su fuente. python setup.py install
+                            - Hay un repositorio no regulado en pypi.python.org (the Python Package Index)
+                            - Utilidades como easy_install y pip instalan software y sus dependencias
+                            - Utilizan pypi como fuente de paquetes por defecto
+
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            # Gracias!!
                         </script>
                     </section>
 			</div>
